@@ -12,7 +12,7 @@ angular.module('appApp', ['appApp.services', 'appApp.controllers', 'appApp.direc
       .when '/words',
         templateUrl: 'views/words.html'
         controller: 'WordsCtrl'
-      .when '/individual',
+      .when '/individual/:bioguide_id',
         templateUrl: 'views/individual.html'
         controller: 'IndividualCtrl'
       .when '/district_map/:bioguide_id',
@@ -21,6 +21,10 @@ angular.module('appApp', ['appApp.services', 'appApp.controllers', 'appApp.direc
       .when '/compare',
         templateUrl: 'views/compare.html'
         controller: 'CompareCtrl'
+      .when '/about',
+        templateUrl: 'views/about.html'
+      .when '/attribution',
+        templateUrl: 'views/attribution.html'
       .otherwise
         redirectTo: '/'
   ]
