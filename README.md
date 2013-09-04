@@ -1,43 +1,39 @@
 Introduction
 ============
 This is a fork of a collaborative project(https://github.com/IdeaHaven/influence). This project was developed on a three week timeline.
-Below are some notes about code that I specifically contributed to this project.
+Below are some notes about code that I (quetzaluz) contributed to this project.
 
-D3, GeoJSON, and Data Visualization
------------------------------------
-Congressional District Map rendering methods in D3 using GeoJSON:
+### D3, GeoJSON, and Data Visualization
+Congressional District Map rendering methods in D3 using GeoJSON:<br/>
 https://github.com/quetzaluz/influence/blob/master/app/scripts/controllers/district.coffee
 
-Comparative Bar Chart Directive:
+Comparative Bar Chart Directive:<br/>
 https://github.com/quetzaluz/influence/blob/master/app/scripts/directives/compare-bar-chart.coffee
 
-Angular Directives 
-------------------
-API-Get directive for making AJAX calls to APIs:
+### Angular Directives
+API-Get directive for making AJAX calls to APIs: <br/>
 https://github.com/quetzaluz/influence/blob/master/app/scripts/services/Api_get.coffee
 
-Sub-template directive (deprecated in favor of ng-include):
+Sub-template directive (deprecated in favor of ng-include):<br/>
 https://github.com/quetzaluz/influence/blob/master/app/scripts/directives/sub-view.coffee
 
-Angular Views and associated Stylus - Nib stylesheets
------------------------------------------------------
-Compare View (comparative bar chart directives only):
+### Angular Views and associated Stylus - Nib stylesheets
+Compare View (comparative bar chart directives only):<br/>
 https://github.com/quetzaluz/influence/blob/master/app/views/compare.html
 https://github.com/quetzaluz/influence/blob/master/app/styles/compare_bar_chart.styl
 
-District Map View:
+District Map View:<br/>
 https://github.com/quetzaluz/influence/blob/master/app/views/district_map.html
 https://github.com/quetzaluz/influence/blob/master/app/styles/district_map.styl
 
-TDD and Continuous Integration
-------------------------------
-Karma configuration:
+### TDD and Continuous Integration
+Karma configuration:<br/>
 https://github.com/quetzaluz/influence/blob/master/karma.conf.js
 
-Travis CI configuration:
+Travis CI configuration:<br/>
 https://github.com/quetzaluz/influence/blob/master/.travis.yml
 
-Testing Package Declarations in package.json:
+Testing Package Declarations in package.json:<br/>
 https://github.com/quetzaluz/influence/blob/master/package.json
 
 
