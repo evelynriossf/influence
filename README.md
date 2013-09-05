@@ -1,5 +1,5 @@
-Introductory Note
-=================
+Notes on my contributions to this project
+----------------------------------------
 This is a fork of a collaborative project(https://github.com/IdeaHaven/influence). This project was developed on a three week timeline.
 Below are some notes about code that I (quetzaluz) contributed to this project.
 
@@ -10,14 +10,14 @@ https://github.com/quetzaluz/influence/blob/master/app/scripts/controllers/distr
 Comparative Bar Chart Directive:<br/>
 https://github.com/quetzaluz/influence/blob/master/app/scripts/directives/compare-bar-chart.coffee
 
-### Angular Directives
-API-Get directive for making AJAX calls to APIs: <br/>
+### Angular Features
+API-Get service for making AJAX calls to APIs: <br/>
 https://github.com/quetzaluz/influence/blob/master/app/scripts/services/Api_get.coffee
 
 Sub-template directive (deprecated in favor of ng-include):<br/>
 https://github.com/quetzaluz/influence/blob/master/app/scripts/directives/sub-view.coffee
 
-### Angular Views and associated Stylus - Nib stylesheets
+#### Angular Views and associated Stylus - Nib stylesheets
 Compare View (comparative bar chart directives only):<br/>
 https://github.com/quetzaluz/influence/blob/master/app/views/compare.html
 https://github.com/quetzaluz/influence/blob/master/app/styles/compare_bar_chart.styl
