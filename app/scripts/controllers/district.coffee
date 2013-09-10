@@ -20,12 +20,15 @@ angular.module('appApp.controllers')
       )
 
     $scope.findDistrictByLongLat = () ->
+      # Called once geolocation data is obtained.
       ApiGet.congress "districts/locate?latitude=#{$scope.position.coords.latitude}&longitude=#{$scope.position.coords.longitude}", $scope.setDistrict, this
 
     $scope.findDistrictByZip = () ->
+      # Called with completion of Find By Zip form.
       ApiGet.congress "districts/locate?zip=#{$scope.selected_zip}", $scope.setDistrict, this
 
     $scope.classDistrictDialog = (css)->
+      # Sets classing for map informational dialog
       d3.select("#map_dialog")
         .classed("full-display", false)
         .classed("mobile-display", false)
@@ -34,6 +37,7 @@ angular.module('appApp.controllers')
         .classed(css, true)
 
     $scope.showDistrictDialog = (css)->
+      # Toggle district Dialog to show when representative data is fetched.
       d3.select('#map_dialog')
         .classed('hidden', false)
         .transition()
@@ -42,6 +46,7 @@ angular.module('appApp.controllers')
       if css then $scope.classDistrictDialog(css)
 
     $scope.hideDistrictDialog = (css)->
+      # Hide district dialog, called with zoomOut
       d3.select('#map_dialog')
         .classed('hidden', true)
         .transition()
@@ -50,6 +55,7 @@ angular.module('appApp.controllers')
       if css then $scope.classDistrictDialog(css)
 
     $scope.setDistrict = (error, data) ->
+      # Called when district is selected through Zip or geolocation
       if not error
         unless data.length
           # change class of input field.
@@ -61,16 +67,7 @@ angular.module('appApp.controllers')
       else console.log "Error: ", error
 
     $scope.setDistrictData = (newVals, oldVals) ->
-      #TODO: See about reimplementing the behavior below or caching another way.
-      # Old and new values are passed in to see if there has been a change in state.
-      # if newVals.state is oldVals.state
-      #   $scope.district_reps.pop()
-      #   ApiGet.congress "legislators?state=#{$scope.state_district.state}&district=#{$scope.state_district.district}", (error, data) ->
-      #     if not error
-      #       $scope.district_reps.push(data[0])
-      #     else console.log "Error: ", error
-      #     , this
-      # else
+      # NOTE: Should probably be renamed to fetch representative data, as this doesn't set the district it as much as fetch related representative data when a district is selected.
         $scope.district_reps = []
         ApiGet.congress "legislators?state=#{$scope.state_district.state}&title=Sen", (error, data) ->
           if not error
@@ -87,6 +84,7 @@ angular.module('appApp.controllers')
 
 
     $scope.highlightDistrict = () ->
+      # Toggle styling and zoomIn once a district is selected.
       d3.select('.districts').selectAll('path').classed('selected', false)
       district_element = d3.select(d3.select('.districts').selectAll('path').filter((d, i) -> return this.textContent == "#{$scope.state_district.state}-#{$scope.state_district.district}")[0][0])
       district_element.attr('class', 'selected')
@@ -97,6 +95,7 @@ angular.module('appApp.controllers')
           $scope.drawMapByState($scope.state_to_FIPS[$scope.state_district.state])
 
     $scope.drawMap = () ->
+      # Render full screen map. Some code here is repeated in drawMapByState and should be extracted into a helper method.
       d3.select('.container')
         .classed("mobile-display", false)
       ready = (error, us, congress) ->
@@ -142,6 +141,7 @@ angular.module('appApp.controllers')
       queue().defer(d3.json, "data/us.json").defer(d3.json, "data/us-congress-113.json").await ready
 
     $scope.makeTooltip = () ->
+      # Called for both map views, generates tooltip.
       return d3.select("#map_holder")
         .append("div")
         .attr("class", "map_tooltip")
@@ -149,6 +149,7 @@ angular.module('appApp.controllers')
         .style("visibility", "hidden")
 
     $scope.makeMapGradients = () ->
+      # Called for both map views, generates state selection gradients.
       d3.select("#map_holder").select("svg")
         .append("radialGradient")
           .attr("id", "selected_gradient")
@@ -182,6 +183,7 @@ angular.module('appApp.controllers')
           .attr("stop-color", (d)->  return d.color)
 
     $scope.zoomIn = (d) ->
+      # Zooms in, called with selection of district.
       element = d.node()
       bbox = element.getBBox()
       x = bbox.x + bbox.width/2
@@ -191,6 +193,7 @@ angular.module('appApp.controllers')
       $scope.usMap.transition().duration(750).attr("transform", "translate(" + 960 / 2 + "," + 600 / 2 + ")scale(" + scale + ")translate(" + -x + "," + -y + ")").style "stroke-width", 1.5 / scale + "px"
 
     $scope.zoomOut = (d) ->
+      # Zooms out to full view, event callback on doubleclick.
       d3.select('.districts').selectAll('path').classed('selected', false)
       $scope.position = null
       $scope.selected_zip = null
@@ -202,6 +205,7 @@ angular.module('appApp.controllers')
 
 
     $scope.defaultFocus = () ->
+      # Automatically focuses on a district if a representative ID is provided in route parameters.
       # TODO: refactor this to not use an API call but only scope variables if possible.
       if $routeParams.bioguide_id.length > 0
         ApiGet.congress "legislators?bioguide_id=#{$routeParams.bioguide_id}", (error, data) ->
@@ -218,6 +222,7 @@ angular.module('appApp.controllers')
       else console.log "No parameter"
 
     $scope.drawMapByState = (state_FIPS) ->
+      # Renders map view of individual states for mobile view, toggled by scope watcher on window size.
       $('body').scrollTop(0)
       d3.select('.container')
         .classed("mobile-display", true)
@@ -270,6 +275,7 @@ angular.module('appApp.controllers')
       queue().defer(d3.json, "data/us.json").defer(d3.json, "data/us-congress-113.json").await ready
 
     $scope.changeMapSize = (windowSize) ->
+      # Determines whether to call drawMap or drawMapByState depending on screen size.
       if windowSize <= 400 and $scope.map_width is 0
         unless $scope.state_district.state
           if !$scope.state_district.state and !$routeParams.bioguide_id
@@ -289,6 +295,7 @@ angular.module('appApp.controllers')
         $scope.drawMap()
 
     $scope.setDistrictThroughSelect = (state) ->
+      # Set state district through state selection field.
       state = state.toUpperCase()
       setDist = false
       for one_district_state in ["AK", "DE", "MT", "ND", "SD", "VT", "WY"]
@@ -301,6 +308,7 @@ angular.module('appApp.controllers')
       if !setDist
         return $scope.state_district = {state: state, district: "1"}
 
+    # Call defaultFocus with initialization in case there are route parameters.
     $scope.defaultFocus()
 
     $scope.$watch('state_district', (newVals, oldVals) ->
